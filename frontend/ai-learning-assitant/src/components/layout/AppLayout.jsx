@@ -6,41 +6,24 @@ const AppLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsSidebarOpen((prev) => !prev);
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#f9fafb",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* Header */}
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+      {/* Top header bar */}
       <Header toggleSidebar={toggleSidebar} />
 
-      {/* Layout with Sidebar */}
-      <div style={{ display: "flex", flex: 1 }}>
-        
+      {/* Body: sidebar + main content */}
+      <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Sidebar */}
-        <Sidebar
-          isSidebarOpen={isSidebarOpen}
-          toggleSidebar={toggleSidebar}
-        />
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-        {/* Page Content */}
-        <main
-          style={{
-            flex: 1,
-            maxWidth: "80rem",
-            width: "100%",
-            margin: "0 auto",
-            padding: "2rem 1rem",
-          }}
-        >
-          {children}
+        {/* Page content */}
+        <main className="flex-1 overflow-y-auto p-6 md:p-8">
+          <div className="max-w-7xl mx-auto w-full">
+            {children}
+          </div>
         </main>
       </div>
     </div>

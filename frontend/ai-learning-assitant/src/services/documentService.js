@@ -4,7 +4,7 @@ import { API_PATHS } from "../utils/apiPaths";
 const getDocuments = async () => {
     try {
         const response = await axiosInstance.get(API_PATHS.DOCUMENTS.GET_DOCUMENTS);
-        return response.data; // Return the list of documents
+        return response.data.data; // Return the list of documents
     } catch (error) {
         console.error("Get documents error:", error);
         throw error; // Rethrow the error to be handled by the caller
@@ -13,15 +13,18 @@ const getDocuments = async () => {
 
 const uploadDocument = async (formData) => {
     try {
-        const response = await axiosInstance.post(API_PATHS.DOCUMENTS.UPLOAD_DOCUMENT, formData, {   
+        // FIX: was UPLOAD_DOCUMENT (undefined key) — correct key is UPLOAD
+        const response = await axiosInstance.post(API_PATHS.DOCUMENTS.UPLOAD, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        return response.data; // Return the uploaded document's data
+        return response.data;
     } catch (error) {
         console.error("Upload document error:", error);
-        throw error; // Rethrow the error to be handled by the caller
+        // Extract the real server message if available
+        const message = error?.response?.data?.message || error.message || "Upload failed";
+        throw new Error(message);
     }
 };
 
