@@ -1,74 +1,73 @@
 import axiosInstance from "../utils/axiosIntance";
 import { API_PATHS } from "../utils/apiPaths";
 
-const genrateFlashcards = async (documentId, options) => {
+const generateFlashcards = async (documentId, count = 10) => {
     try {
-        const response = await axiosInstance.post(API_PATHS.AI.GENERATE_FLASHCARDS(documentId), ...options);
-        return response.data; // Return the generated flashcards
+        const response = await axiosInstance.post(API_PATHS.AI.GENERATE_FLASHCARDS, { documentId, count });
+        return response.data;
     } catch (error) {
         console.error("Generate flashcards error:", error);
-        throw error; // Rethrow the error to be handled by the caller
+        throw error;
     }
 };
 
-const genrateQuiz = async (documentId, options) => {
+const generateQuiz = async (documentId, numQuestions = 5, title) => {
     try {
-        const response = await axiosInstance.post(API_PATHS.AI.GENERATE_QUIZ(documentId), ...options);
-        return response.data; // Return the generated quiz
+        const response = await axiosInstance.post(API_PATHS.AI.GENERATE_QUIZ, { documentId, numQuestions, title });
+        return response.data;
     } catch (error) {
         console.error("Generate quiz error:", error);
-        throw error; // Rethrow the error to be handled by the caller
+        throw error;
     }
 };
 
-const genrateSummary = async (documentId) => {
+const generateSummary = async (documentId) => {
     try {
-        const response = await axiosInstance.post(API_PATHS.AI.GENERATE_SUMMARY(documentId));
-        return response.data; // Return the generated summary
+        const response = await axiosInstance.post(API_PATHS.AI.GENERATE_SUMMARY, { documentId });
+        return response.data;
     } catch (error) {
         console.error("Generate summary error:", error);
-        throw error; // Rethrow the error to be handled by the caller
+        throw error;
     }
 };
 
-const chat = async (documentId, message) => {
+const chat = async (documentId, question) => {
     try {
-        const response = await axiosInstance.post(API_PATHS.AI.CHAT(documentId), { message });
-        return response.data; // Return the chatbot's response
+        const response = await axiosInstance.post(API_PATHS.AI.CHAT, { documentId, question });
+        return response.data;
     } catch (error) {
         console.error("Chat error:", error);
-        throw error; // Rethrow the error to be handled by the caller
+        throw error;
     }
 };
 
-const explainConcept = async (concept, documentId) => {
+const explainConcept = async (documentId, concept) => {
     try {
-        const response = await axiosInstance.post(API_PATHS.AI.EXPLAIN_CONCEPT(documentId), { concept });
-        return response.data; // Return the explanation
+        const response = await axiosInstance.post(API_PATHS.AI.EXPLAIN_CONCEPT, { documentId, concept });
+        return response.data;
     } catch (error) {
         console.error("Explain concept error:", error);
-        throw error; // Rethrow the error to be handled by the caller
+        throw error;
     }
 };
 
 const getChatHistory = async (documentId) => {
     try {
         const response = await axiosInstance.get(API_PATHS.AI.GET_CHAT_HISTORY(documentId));
-        return response.data; // Return the chat history
+        return response.data;
     } catch (error) {
         console.error("Get chat history error:", error);
-        throw error; // Rethrow the error to be handled by the caller
+        throw error;
     }
 };
 
 const aiService = {
-    genrateFlashcards,
-    genrateQuiz,
-    genrateSummary,
+    generateFlashcards,
+    generateQuiz,
+    generateSummary,
     chat,
     explainConcept,
     getChatHistory,
 };
 
 export default aiService;
-

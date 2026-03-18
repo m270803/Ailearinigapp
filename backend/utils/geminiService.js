@@ -1,16 +1,23 @@
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
 
-dotenv.config();
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+if (!process.env.GOOGLE_GENAI_API_KEY) {
+    console.warn('Warning: GOOGLE_GENAI_API_KEY is not set. GeminiService will not work without it.');
+    // In some environments, we might not want to exit 1 immediately, 
+    // but for this app it's a hard dependency.
+}
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GOOGLE_GENAI_API_KEY,
 });
-
-if (!process.env.GOOGLE_GENAI_API_KEY) {
-    console.warn('Warning: GOOGLE_GENAI_API_KEY is not set. GeminiService will not work without it.');
-    process.exit(1);
-}
 
 /**
  * generate flashcards from text using Gemini API
@@ -32,8 +39,8 @@ export const generateFlashcards = async (text, count = 10) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
-            contents: prompt,
+            model: "gemini-1.5-flash",
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
         });
 
         const generatedText = response.text;
@@ -96,8 +103,8 @@ export const generateQuizQuestions = async (text, numQuestions = 5) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
-            contents: prompt,
+            model: "gemini-1.5-flash",
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
         });
 
         const generatedText = response.text;
@@ -150,8 +157,8 @@ export const generateSummary = async (text) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
-            contents: prompt,
+            model: "gemini-1.5-flash",
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
         });
         const genratedText = response.text;
         return genratedText.trim();
@@ -168,7 +175,7 @@ export const generateSummary = async (text) => {
  * @returns {Promise<string>} - the generated response from the AI
  */
 export const chatWithContext = async (question, chunks) => {
-    const context = chunks.map((chunk, index) => `Chunk ${index + 1}:\n${chunk}`).join('\n\n');
+    const context = chunks.map((chunk, index) => `Chunk ${index + 1}:\n${chunk.content}`).join('\n\n');
     const prompt = `You are an AI assistant that helps users understand a document. 
     Use the following chunks of the document as context to answer the user's question. 
     If the answer is not in the provided chunks, say you don't know.
@@ -182,9 +189,10 @@ export const chatWithContext = async (question, chunks) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
-            contents: prompt,
+            model: "gemini-1.5-flash",
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
         });
+
         const generatedText = response.text;
         return generatedText.trim();
     } catch (error) {
@@ -209,9 +217,10 @@ export const explainConcept = async (concept, context) => {
 
     try {  
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
-            contents: prompt,
+            model: "gemini-1.5-flash",
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
         });
+
         const generatedText = response.text;
         return generatedText.trim();
     } catch (error) {

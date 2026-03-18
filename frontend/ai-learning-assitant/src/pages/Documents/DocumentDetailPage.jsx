@@ -7,6 +7,8 @@ import Spinner from '../../components/common/Spinner';
 import documentService from '../../services/documentService';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
+import ChatInterface from '../../components/chat/ChatInterface';
+
 
 const DocumentDetailPage = () => {
   const { id } = useParams();
