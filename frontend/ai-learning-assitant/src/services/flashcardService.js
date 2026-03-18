@@ -35,7 +35,7 @@ const reviewFlashcard = async (cardId, cardIndex) => {
 
 const toggleStar = async (cardId) => {
     try {
-        const response = await axiosInstance.post(API_PATHS.FLASHCARDS.TOGGLE_STAR(cardId));
+        const response = await axiosInstance.put(API_PATHS.FLASHCARDS.TOGGLE_STAR(cardId));
         return response.data; // Return the updated flashcard data
     }
     catch (error) {
@@ -46,7 +46,7 @@ const toggleStar = async (cardId) => {
 
 const deleteFlashcard = async (id) => {
     try {
-        const response = await axiosInstance.delete(API_PATHS.FLASHCARDS.DELETE_FLASHCARD(id));
+        const response = await axiosInstance.delete(API_PATHS.FLASHCARDS.DELETE_FLASHCARD_SET(id));
         return response.data; // Return the deleted flashcard's data
     }
     catch (error) {

@@ -8,6 +8,9 @@ import documentService from '../../services/documentService';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import ChatInterface from '../../components/chat/ChatInterface';
+import AIActionsTab from '../../components/documents/AIActionsTab';
+import DocumentFlashcardsTab from '../../components/documents/DocumentFlashcardsTab';
+import DocumentQuizzesTab from '../../components/documents/DocumentQuizzesTab';
 
 
 const DocumentDetailPage = () => {
@@ -88,23 +91,12 @@ const DocumentDetailPage = () => {
     );
   };
 
-  const renderChat = () => {
-    return <ChatInterface />
-  }
-
-  const renderPlaceholder = (title) => (
-    <div className="flex flex-col items-center justify-center h-64 bg-white rounded-xl shadow-sm border border-slate-200 text-center p-8">
-      <h3 className="text-lg font-medium text-slate-900 mb-2">{title}</h3>
-      <p className="text-slate-500 text-sm">This feature is coming soon.</p>
-    </div>
-  );
-
   const tabs = [
     { name: 'Content', label: 'Content', content: renderContent() },
-    { name: 'Chat', label: 'Chat', content: renderChat() },
-    { name: 'AI Actions', label: 'AI Actions', content: renderPlaceholder('AI Actions') },
-    { name: 'Flashcards', label: 'Flashcards', content: renderPlaceholder('Flashcards') },
-    { name: 'Quizzes', label: 'Quizzes', content: renderPlaceholder('Quizzes') },
+    { name: 'Chat', label: 'Chat', content: <ChatInterface documentId={id} /> },
+    { name: 'AI Actions', label: 'AI Actions', content: <AIActionsTab documentId={id} /> },
+    { name: 'Flashcards', label: 'Flashcards', content: <DocumentFlashcardsTab documentId={id} /> },
+    { name: 'Quizzes', label: 'Quizzes', content: <DocumentQuizzesTab documentId={id} /> },
   ];
 
   if (loading) {
