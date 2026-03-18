@@ -41,6 +41,12 @@ app.use(express.urlencoded({ extended: true }));
 // static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// request logger
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+});
+
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/documents', documentsRoutes);
