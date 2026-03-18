@@ -57,3 +57,8 @@ externalPort = 80
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "cd backend && node server.js & cd frontend/ai-learning-assitant && npx serve -s dist -l 5000"]
 build = ["bash", "-c", "cd frontend/ai-learning-assitant && npm install && npm run build"]
+
+[userenv]
+
+[userenv.shared]
+GOOGLE_GENAI_API_KEY = "AIzaSyASj5CxopDrFpTsD44REaFy9B6G71KbRF4"
