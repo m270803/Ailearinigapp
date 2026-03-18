@@ -294,10 +294,10 @@ export const getChatHistory = async (req, res, next) => {
             documentId: documentId
         });
         if(!chatHistory) {
-            return res.status(404).json({
-                success: false,
-                error: 'Chat history not found for this document',
-                statusCode: 404
+            return res.status(200).json({
+                success: true,
+                message: 'No chat history yet',
+                data: { messages: [] }
             });
         }
         res.status(200).json({
