@@ -12,11 +12,13 @@ export const generateFlashcards = async (req, res, next) => {
     try {
         const { documentId, count = 10 } = req.body;
 
+        if (!documentId) {
             return res.status(400).json({
                 success: false,
                 message: 'Document ID is required',
                 statusCode: 400,
             });
+        }
         const document = await Document.findOne({
             _id: documentId,
             userId: req.user._id,
