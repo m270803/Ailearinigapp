@@ -7,16 +7,14 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, '../.env'), override: true });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-if (!process.env.GOOGLE_GENAI_API_KEY) {
-    console.warn('Warning: GOOGLE_GENAI_API_KEY is not set. GeminiService will not work without it.');
-    // In some environments, we might not want to exit 1 immediately, 
-    // but for this app it's a hard dependency.
+if (!process.env.GOOGLE_API_KEY) {
+    console.warn('Warning: GOOGLE_API_KEY is not set. GeminiService will not work without it.');
 }
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.GOOGLE_GENAI_API_KEY,
+    apiKey: process.env.GOOGLE_API_KEY,
 });
 
 /**
