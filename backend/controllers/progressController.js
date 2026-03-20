@@ -22,9 +22,10 @@ export const getDashboard = async (req, res, next) => {
         let starredFlashcards = 0;
 
         flashcardStats.forEach(set => {
-            totalFlashcards += set.flashcards.length;
-            reviewedFlashcards += set.flashcards.filter(c => c.reviewCount > 0).length;
-            starredFlashcards += set.flashcards.filter(c => c.isStarred).length;
+            const cards = set.flashcards || [];
+            totalFlashcards += cards.length;
+            reviewedFlashcards += cards.filter(c => c.reviewCount > 0).length;
+            starredFlashcards += cards.filter(c => c.isStarred).length;
         });
 
         // get quiz stats

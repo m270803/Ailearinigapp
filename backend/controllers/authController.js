@@ -119,11 +119,31 @@ export const getProfile = async (req, res, next) => {
 export const updateProfile = async (req, res, next) => {     
     try {
         const { username, email, profileImage } = req.body;
-        const user = await User.findById(req.user.id);
+        const userId = req.user._id;
+        const user = await User.findById(userId);
 
-        if (username) user.username = username;
-        if (email) user.email = email;
-        if (profileImage) user.profileImage = profileImage;
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+
+        if (username && username !== user.username) {
+            const taken = await User.findOne({ username, _id: { $ne: userId } });
+            if (taken) {
+                return res.status(400).json({ success: false, error: 'Username is already taken' });
+            }
+            user.username = username;
+        }
+
+        if (email && email !== user.email) {
+            const taken = await User.findOne({ email, _id: { $ne: userId } });
+            if (taken) {
+                return res.status(400).json({ success: false, error: 'Email is already in use' });
+            }
+            user.email = email;
+        }
+
+        if (profileImage !== undefined) user.profileImage = profileImage;
+
         await user.save();
 
         res.status(200).json({

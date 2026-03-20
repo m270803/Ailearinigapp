@@ -39,7 +39,7 @@ const ProfilePage = () => {
             updateUser(res.data);
             toast.success('Profile updated successfully');
         } catch (err) {
-            toast.error(err?.response?.data?.message || 'Failed to update profile');
+            toast.error(err?.response?.data?.error || err?.response?.data?.message || 'Failed to update profile');
         } finally {
             setProfileLoading(false);
         }
